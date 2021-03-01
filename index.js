@@ -7,7 +7,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const port = 3080;
+const port = process.env.PORT || 3080;
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 
