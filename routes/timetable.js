@@ -8,6 +8,13 @@ router.post('/api/timetable', userAuth, async (req, res) => {
     if(!req.body.date || !req.body.keyword) return res.status(400);
     if(!req.body.teacher) return res.status(400).send("Vous n'êtes pas un professeur.");
 
+    let usersArray = []
+
+    req.body.users.forEach(user => {
+        usersArray.push(user.username)    
+    });
+
+    req.body.users = usersArray;
     const timetableItem = new TimeTableItem(req.body);
 
     await timetableItem.save();

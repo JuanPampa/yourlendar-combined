@@ -4,7 +4,10 @@ import SearchBox from './SearchBox';
 export default class TimeTableAdd extends React.Component {
     constructor(props) {
         super(props);
-        this.username = this.props.username;
+        this.teacher = {
+            username: this.props.teacher.username,
+            name: this.props.teacher.name
+        };
         this.state = {
             isLoaded: false,
             searchBar: "",
@@ -22,7 +25,7 @@ export default class TimeTableAdd extends React.Component {
         }).then(res => {return res.text()}).then((data) => {
 
             JSON.parse(data).forEach((user) => {
-                this.setState({users: this.state.users.concat([user.username])})
+                this.setState({users: this.state.users.concat([user])})
             })
             
             return this.setState({isLoaded: true})
@@ -41,14 +44,14 @@ export default class TimeTableAdd extends React.Component {
         })*/
     }
     
-    addUser(username) {
-        this.setState({users: this.state.users.filter(user => !(user === username))});
-        this.setState({usersChosen: this.state.usersChosen.concat([username])});
+    addUser(userEntered) {
+        this.setState({users: this.state.users.filter(user => !(user.username === userEntered.username))});
+        this.setState({usersChosen: this.state.usersChosen.concat([userEntered])});
     }
 
-    removeUser(username) {
-        this.setState({usersChosen: this.state.usersChosen.filter(user => !(user === username))});
-        this.setState({users: this.state.users.concat([username])});
+    removeUser(userEntered) {
+        this.setState({usersChosen: this.state.usersChosen.filter(user => !(user.username === userEntered.username))});
+        this.setState({users: this.state.users.concat([userEntered])});
     }
 
     addTimeTableItem(keyword, description, date) {
@@ -63,7 +66,7 @@ export default class TimeTableAdd extends React.Component {
                 keyword: keyword,
                 description: description,
                 date: date,
-                teacher: this.username,
+                teacher: this.teacher,
                 users: this.state.usersChosen
             })
         }).then().then(() => this.setState({isLoaded: false}));
@@ -89,7 +92,7 @@ export default class TimeTableAdd extends React.Component {
 
     render() {
         const {users, searchBar} = this.state;
-        const filteredUsers = users.filter(user => user.toLowerCase().includes(searchBar.toLowerCase()))
+        const filteredUsers = users.filter(user => (user.surname.toLowerCase() + ' ' + user.name.toLowerCase()).includes(searchBar.toLowerCase()))
 
         if(this.state.isLoaded) {
             return (
@@ -108,11 +111,11 @@ export default class TimeTableAdd extends React.Component {
                         <input className='login-form-input' id='timetable-date' spellCheck='false' type='date'></input>
                     </div>
                     <div className='m-10'>
-                        {this.state.usersChosen.length > 0 && <UsersChosen users={this.state.usersChosen} removeUser={(username) => this.removeUser(username)}/>}
+                        {this.state.usersChosen.length > 0 && <UsersChosen users={this.state.usersChosen} removeUser={(user) => this.removeUser(user)}/>}
                         <div className='mb-3'>
                             <SearchBox placeholder='Recherchez un élève' handleChange={(e) => this.setState({searchBar: e.target.value})}/>
                         </div>
-                        {this.state.searchBar.length > 0 && <UsersList users={filteredUsers} addUser={(username) => this.addUser(username)}/>}
+                        {this.state.searchBar.length > 0 && <UsersList users={filteredUsers} addUser={(user) => this.addUser(user)}/>}
                     </div>
                     
                     <div className='m-10'>
@@ -128,7 +131,7 @@ export default class TimeTableAdd extends React.Component {
 function UsersList(props) {
     let renderedArray = []
     props.users.forEach(user => {
-        renderedArray.push(<button key={user} className='button bg-green-500 block' onClick={() => props.addUser(user)}>{user}</button>)
+        renderedArray.push(<button key={user._id} className='button bg-green-500 block' onClick={() => props.addUser(user)}>{user.surname} {user.name}</button>)
     })
     return (
         <div className='block space-y-4'>
@@ -140,7 +143,7 @@ function UsersList(props) {
 function UsersChosen(props) {
     let renderedArray = []
     props.users.forEach(user => {
-        renderedArray.push(<button key={user} className='button bg-red-500 block mb-2' onClick={() => props.removeUser(user)}>{user}</button>)
+        renderedArray.push(<button key={user._id} className='button bg-red-500 block mb-2' onClick={() => props.removeUser(user)}>{user.surname} {user.name}</button>)
     })
     return (
         <div className='block space-y-4'>

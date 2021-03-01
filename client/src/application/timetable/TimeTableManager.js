@@ -78,7 +78,7 @@ export default class TimeTableManager extends React.Component {
                         </div>
                     </div>
 
-                    {this.state.mode === 1 && <TimeTableAdd username={this.userObject.username}/>}
+                    {this.state.mode === 1 && <TimeTableAdd teacher={this.userObject}/>}
                     {this.state.mode === 2 && <TimeTableRemove />}
                 </div>
            </div>

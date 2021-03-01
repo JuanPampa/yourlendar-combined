@@ -29,9 +29,16 @@ const timeTableSchema = new mongoose.Schema({
         required: true
     },
     teacher: {
-        type: String,
-        trim: true,
-        required: true
+        username: {
+            type: String,
+            trim: true,
+            required: true
+        },
+        name: {
+            type: String,
+            trim: true,
+            required: true
+        }
     },
     users: [String]
 });

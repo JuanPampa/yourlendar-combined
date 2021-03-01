@@ -60,8 +60,11 @@ export default class Yourlendar extends React.Component {
     }
 }
 
+
+
+
+
 function TimeTableItemYourlendar(props) {
-    
     let renderedArray = []
 
     props.dues.forEach(element => {
@@ -72,7 +75,7 @@ function TimeTableItemYourlendar(props) {
                     <p className='text-indigo-600 text-xl'>{element.description}</p>
                 </div>
                 <div>
-                    <p className='text-blue-400'>{element.teacher}</p>
+                    <p className='text-blue-400'>Professeur: {element.teacher.name.toUpperCase()}</p>
                     <p className='text-pink-500'>Pour le {element.date.split('-')[2].split('T')[0]}/{element.date.split('-')[1]}/{element.date.split('-')[0]}</p>
                 </div>
             </div>
