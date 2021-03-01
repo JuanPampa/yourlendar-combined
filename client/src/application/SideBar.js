@@ -44,7 +44,7 @@ class SideBarMenu extends React.Component {
                 <div className='p-4 m-auto'> 
                 <img 
                     className='m-auto p-1'
-                    src='https://app.yourlendar.fr/favicon.png' 
+                    src='https://yourlendar-app.herokuapp.com/favicon.png' 
                     alt='Yourlendar'>
                 </img>
                 <h3 className='text-xl text-green-500 m-auto leading-tight mb-4'>Bonjour, {this.userObject.surname} {this.userObject.name}.</h3>
