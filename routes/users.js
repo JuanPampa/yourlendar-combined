@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../schemas/UserSchema');
 const userAuth = require('../middleware/userauth');
+const cors = request('cors');
 
 const router = new express.Router(); // Creating a new express router to handle the different routes.
 
@@ -169,7 +170,13 @@ router.get('/api/users/teachers', userAuth, async (req, res) => {
     })
 });
 
-router.get('/api/users/external', async (req, res) => {
+router.get('/api/users/external', cors({
+    origin: '*',
+    methods: [],
+    allowedHeaders: [],
+    exposedHeaders: [],
+    credentials: false
+}), async (req, res) => {
     const users = await User.find({});
     let teachers = 0;
     let students = 0;
