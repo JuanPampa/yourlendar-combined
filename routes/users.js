@@ -169,4 +169,20 @@ router.get('/api/users/teachers', userAuth, async (req, res) => {
     })
 });
 
+router.get('/api/users/external', async (req, res) => {
+    const users = await User.find({});
+    let teachers = 0;
+    let students = 0;
+
+    users.forEach((user) => {
+        if(user.teacher) {
+            teachers++;
+        } else {
+            students++;
+        }
+    }) 
+    
+    return res.status(200).send([teachers, students]);
+})
+
 module.exports = router;
