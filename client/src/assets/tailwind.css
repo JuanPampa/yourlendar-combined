@@ -1,0 +1,20 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+@layer components {
+    .button {
+        @apply block m-auto text-white font-bold py-2 px-4 rounded;
+    },
+    .button--traditional {
+        @apply bg-blue-500 hover:bg-blue-700;
+    },
+    .button--action {
+        @apply bg-gray-500 hover:bg-gray-700; 
+    },
+    .button--warning {
+        @apply bg-red-500 m-auto hover:bg-red-700;
+    }
+}
