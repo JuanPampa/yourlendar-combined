@@ -25,10 +25,16 @@ export default function UsersRegister() {
             return document.getElementById('yourlendar-register-message').innerHTML = 'Votre mot de passe doit faire au moins 8 caractères.';
 
         // If the email is incorrect, we are returning an error.
-        } else if(!validator.isEmail(document.getElementById('yourlendar-email-register').value)) {
+       /* } else if(!validator.isEmail(document.getElementById('yourlendar-email-register').value)) {
             document.getElementById('submit-button').style.display = 'inline';
             return document.getElementById('yourlendar-register-message').innerHTML = 'Veuillez entrer un email correct.';  
-        } 
+        */
+
+        // Checking if the name and the surname are correct.
+        } else if(document.getElementById('yourlendar-surname-register').value.length < 2 || document.getElementById('yourlendar-name-register').value.length < 2) {
+            document.getElementById('submit-button').style.display = 'inline';
+            return document.getElementById('yourlendar-register-message').innerHTML = 'Veuillez entrer un nom et un prénom correct.';  
+        }
 
         // Checking for inappropriate characters in the username. (So that users can't manipulate the source code with the inputs.)
         for(let i = 0; i < forbiddenCharacters.length; i++) {
@@ -38,16 +44,16 @@ export default function UsersRegister() {
             }
         }
 
-        createUserAccount(document.getElementById('yourlendar-username-register').value, document.getElementById('yourlendar-email-register').value, document.getElementById('yourlendar-password-register').value, document.getElementById('yourlendar-isTeacher').checked, (res) => {
-            if (res.statusCode === 201) {
+        createUserAccount(document.getElementById('yourlendar-surname-register').value, document.getElementById('yourlendar-name-register').value, document.getElementById('yourlendar-username-register').value, document.getElementById('yourlendar-password-register').value, document.getElementById('yourlendar-isTeacher').checked, (statusCode) => {
+            if (statusCode === 201) {
                 document.getElementById('yourlendar-register-message').style.color = 'green';
                 document.getElementById('yourlendar-register-message').innerHTML = 'Votre compte a bien été crée. Vous allez être redirigé..'
                 setTimeout(() => {
                     window.location.href = '/';
                 }, 2000);
-            } else if(res.statusCode === 400) {
+            } else if(statusCode === 400) {
                 document.getElementById('submit-button').style.display = 'inline';
-                return document.getElementById('yourlendar-register-message').innerHTML = res.body;
+                return document.getElementById('yourlendar-register-message').innerHTML = "Une erreur s'est produite..";
             }
         });
 
@@ -67,23 +73,32 @@ export default function UsersRegister() {
                 <h3>Enregistrement</h3>
 
                 <div className='register-form-content'>
+                    <input className='register-form-input' onKeyPress={(e) => handleKeyPress(e)} id='yourlendar-surname-register' spellCheck='false' type='text' placeholder="Nom"></input>
+                </div>
+
+                <div className='register-form-content'>
+                    <input className='register-form-input' onKeyPress={(e) => handleKeyPress(e)} id='yourlendar-name-register' spellCheck='false' type='text' placeholder="Prénom"></input>
+                </div>
+
+                <div className='register-form-content'>
                     <input className='register-form-input' onKeyPress={(e) => handleKeyPress(e)} id='yourlendar-username-register' spellCheck='false' type='text' placeholder="Nom d'utilisateur"></input>
                 </div>
-                <div className='register-form-content'>
-                    <input className='register-form-input' onKeyPress={(e) => handleKeyPress(e)} id='yourlendar-email-register' spellCheck='false' type='email' placeholder="Adresse e-mail"></input>
-                </div>
+
                 <div className='register-form-content'>
                     <input className='register-form-input' onKeyPress={(e) => handleKeyPress(e)} id='yourlendar-password-register' spellCheck='false' type='password' placeholder='Mot de passe'></input>
                 </div>
+
                 <div className='register-form-content'>
                     <input className='register-form-input' onKeyPress={(e) => handleKeyPress(e)} id='yourlendar-confirm-password-register' spellCheck='false' type='password' placeholder='Confirmer mot de passe'></input>
                 </div>
+
                 <div className='register-form-content'>
                     <label className="inline-flex items-center">
                         <input id='yourlendar-isTeacher' type="checkbox" class="form-checkbox"  />
                         <span className="ml-2 text-white">Compte professeur</span>
                     </label>
                 </div>
+                
                 <div className='register-form-content'>
                     <button id='submit-button' onClick={() => executeAccountCreation()}>S'enregistrer</button>
                 </div>

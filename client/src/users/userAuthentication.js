@@ -1,17 +1,19 @@
-const request = require('request');
-
 export default function userAuthentication(username, password, callback) {
-    request.post({
-        url: '/api/users/auth',
-        body: {
+
+    fetch("/api/users/auth", {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
             username: username,
             password: password
-        },
-        json: true,
-        withCredentials: true
-    }, (err, res, body) => {
-        return callback(res);
+        })
+    }).then().then(data => {
+        return callback(data.status);
     });
+    
     return;
 }
 

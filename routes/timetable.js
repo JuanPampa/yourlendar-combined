@@ -14,7 +14,7 @@ router.post('/api/timetable', userAuth, async (req, res) => {
     return res.status(200);
 });
 
-router.get('/api//timetable', userAuth, async(req, res) => {
+router.get('/api/timetable', userAuth, async(req, res) => {
     if(req.user.teacher) {
         const timetableItems = await TimeTableItem.find({teacher: req.user.username});
         return res.status(200).send(timetableItems);
@@ -24,7 +24,7 @@ router.get('/api//timetable', userAuth, async(req, res) => {
     }
 })
 
-router.delete('/api//timetable', userAuth, async(req, res) => {
+router.delete('/api/timetable', userAuth, async(req, res) => {
     await TimeTableItem.deleteOne({_id: req.body._id});
     return res.status(200);
 })

@@ -1,6 +1,5 @@
 import React from 'react';
 import SearchBox from './SearchBox';
-const request = require('request');
 
 export default class TimeTableAdd extends React.Component {
     constructor(props) {
@@ -15,7 +14,21 @@ export default class TimeTableAdd extends React.Component {
     }
 
     getAllUsers() {
-        request.get({
+
+        fetch("/api/users/students", {
+            method: "GET",
+            mode: "cors",
+            credentials: "include"
+        }).then(res => {return res.text()}).then((data) => {
+
+            JSON.parse(data).forEach((user) => {
+                this.setState({users: this.state.users.concat([user.username])})
+            })
+            
+            return this.setState({isLoaded: true})
+        })
+
+        /*request.get({
             url: '/api/users/students',
             withCredentials: true
         }, (err, res, body) => {
@@ -25,7 +38,7 @@ export default class TimeTableAdd extends React.Component {
             })
 
             return this.setState({isLoaded: true});
-        })
+        })*/
     }
     
     addUser(username) {
@@ -39,7 +52,23 @@ export default class TimeTableAdd extends React.Component {
     }
 
     addTimeTableItem(keyword, description, date) {
-        request.post({
+
+        fetch("/api/timetable", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                keyword: keyword,
+                description: description,
+                date: date,
+                teacher: this.username,
+                users: this.state.usersChosen
+            })
+        }).then().then(() => this.setState({isLoaded: false}));
+
+        /*request.post({
             url: "http://localhost:8000/timetable",
             json: true,
             body: {
@@ -51,7 +80,7 @@ export default class TimeTableAdd extends React.Component {
             },
         })
         
-        this.setState({isLoaded: false});
+        this.setState({isLoaded: false});*/
     }
 
     componentDidMount() {
@@ -111,7 +140,7 @@ function UsersList(props) {
 function UsersChosen(props) {
     let renderedArray = []
     props.users.forEach(user => {
-        renderedArray.push(<button key={user} className='button bg-red-500 block' onClick={() => props.removeUser(user)}>{user}</button>)
+        renderedArray.push(<button key={user} className='button bg-red-500 block mb-2' onClick={() => props.removeUser(user)}>{user}</button>)
     })
     return (
         <div className='block space-y-4'>

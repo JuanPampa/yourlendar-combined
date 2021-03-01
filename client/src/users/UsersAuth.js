@@ -29,17 +29,17 @@ export default function UsersAuth() {
         document.getElementById('yourlendar-login-message').innerHTML = '';
 
         // We are calling the created function to make a POST call to the api.
-        userAuthentication(username, password, (res) => {
+        userAuthentication(username, password, (statusCode) => {
             // If the status code is 200 (success).
-            if(res.statusCode === 200) {
+            if(statusCode === 200) {
                 document.getElementById('yourlendar-login-message').style.color = 'green';
-                document.getElementById('yourlendar-login-message').innerHTML = res.body;
+                document.getElementById('yourlendar-login-message').innerHTML = "Vous êtes désormais connecté, vous allez être redirigé..";
                 setTimeout(() => {
                     window.location.href = '/';
                 }, 2000)
             // If the status code is 400 (fail), we are calling the errorHandle function.
-            } else if(res.statusCode === 400) {
-                errorHandle(res.body);
+            } else if(statusCode === 400) {
+                errorHandle("Une erreur s'est produite..");
             }
         });
         return;

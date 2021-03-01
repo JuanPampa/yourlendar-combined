@@ -7,7 +7,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = 3080;
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 
@@ -24,7 +24,6 @@ app.use(timeTableRoute);
 app.get('*', (req,res) =>{
     res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
-
 
 app.listen(port, () => {
     console.log('Yourlendar API is listening on port ' + port);

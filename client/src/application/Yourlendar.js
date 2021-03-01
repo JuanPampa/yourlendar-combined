@@ -1,5 +1,4 @@
 import React from 'react';
-const request = require('request');
 
 export default class Yourlendar extends React.Component {
     constructor(props) {
@@ -10,7 +9,16 @@ export default class Yourlendar extends React.Component {
     }
 
     getTimetableItems() {
-        request.get({
+
+        fetch("/api/timetable", {
+            method: "GET",
+            mode: "cors",
+            credentials: "include"
+        }).then(res => {return res.text()}).then((data) => {
+            this.setState({dues: JSON.parse(data)})
+        })
+
+        /*request.get({
             url: '/api/timetable',
             withCredentials: true
         }, (err, res, body) => {
@@ -25,8 +33,8 @@ export default class Yourlendar extends React.Component {
             return this.setState({
                 dues: [0]
             })
+            */
 
-        });
     }
 
     componentDidMount() {

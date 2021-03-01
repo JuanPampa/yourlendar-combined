@@ -1,7 +1,24 @@
-const request = require('request');
+export default function createUserAccount(surname, name, username, password, teacher, callback) {
 
-export default function createUserAccount(username, email, password, teacher, callback) {
-    request.post({
+    fetch("/api/users/register", {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            surname: surname,
+            name: name,
+            username: username,
+            password: password,
+            teacher: teacher
+        })
+    }).then().then(data => {
+        return callback(data.status);
+    });
+
+
+    /*request.post({
         url: '/api/users/register',
         body: {
             username: username,
@@ -14,6 +31,6 @@ export default function createUserAccount(username, email, password, teacher, ca
         withCredentials: true
     }, (err, res, body) => {
         return callback(res);
-    });
+    });*/
     return;
 }

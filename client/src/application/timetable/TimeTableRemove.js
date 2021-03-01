@@ -1,6 +1,5 @@
 import React from 'react';
 import TimeTableItem from './TimeTableItem';
-const request = require('request');
 
 export default class TimeTableRemove extends React.Component {
     
@@ -17,7 +16,25 @@ export default class TimeTableRemove extends React.Component {
     }
 
     requestTimeTable() {
-        request.get({
+
+        fetch("/api/timetable", {
+            method: "GET",
+            mode: "cors",
+            credentials: "include"
+        }).then(res => {return res.text()}).then((data) => {
+
+            this.timetableItems = JSON.parse(data)
+
+            for(let i = 0; i < this.timetableItems.length; i++) {
+                this.renderedItems.push(<TimeTableItem key={this.timetableItems[i]._id} timetableItem={this.timetableItems[i]} />)
+            }
+            
+            return this.setState({
+                dataLoaded: true
+            });
+        })
+
+        /*request.get({
             url: '/api/timetable',
             withCredentials: true
         }, (err, res, body) => {
@@ -33,7 +50,7 @@ export default class TimeTableRemove extends React.Component {
             return this.setState({
                 dataLoaded: true
             });
-        })
+        })*/
     }
 
     createTimetableList() {
@@ -42,9 +59,7 @@ export default class TimeTableRemove extends React.Component {
     render() {
         if(this.state.dataLoaded) {
             return <div className='m-auto ml-6 mr-6'>{this.renderedItems}</div>
-        } else {
-            return <div></div>
-        }
-        
+        } 
+        else return <div></div>
     }
 }

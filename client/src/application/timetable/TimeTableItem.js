@@ -1,6 +1,5 @@
 import React from 'react';
 import {MdDeleteForever} from "react-icons/md";
-const request = require('request');
 
 export default class TimeTableItem extends React.Component {
     constructor(props) {
@@ -12,7 +11,19 @@ export default class TimeTableItem extends React.Component {
     }
 
     removeItem(id) {
-        request.delete({
+
+        fetch("/api/timetable", {
+            method: "DELETE",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                _id: id
+            })
+        }).then().then(() => this.setState({isDeleted: true}));
+
+        /*request.delete({
             url: "/api/timetable",
             withCredentials: true,
             json: true,
@@ -23,7 +34,7 @@ export default class TimeTableItem extends React.Component {
                 if(res.statusCode === 200) {
                     this.setState({isDeleted: true})
                 }
-            })
+            })*/
     }
 
     render() {

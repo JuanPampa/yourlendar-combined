@@ -1,7 +1,6 @@
 import React from 'react';
 import Users from '../users/Users';
 import ApplicationInterface from './ApplicationInterface';
-const request = require('request');
 
 // Creating a class that extends React Component.
 export default class Application extends React.Component {
@@ -32,7 +31,7 @@ export default class Application extends React.Component {
         /*
             We are making a GET request to the api with the 'withCredentials' condition 
             to true so that the api can check if the user has a got a user cookie stored.
-        */
+        
         request.get({
             url: '/api/users',
             withCredentials: true
@@ -41,7 +40,7 @@ export default class Application extends React.Component {
             /* 
                 If the html status given back by the api is 200, we are setting those
                 two booleans to true.
-            */
+            
            console.log(err)
             if(res.statusCode === 200) {
                 this.userObject = JSON.parse(body); 
@@ -53,12 +52,33 @@ export default class Application extends React.Component {
             /* 
                 We are, here, setting the isConnected boolean to false and the
                 isLoaded boolean to true in the 'this.state' object.
-            */
+            
             return this.setState({
                 isConnected: false,
                 isLoaded: true
             });
         });
+        */
+
+        fetch("/api/users", {
+            method: "GET",
+            mode: "cors",
+            credentials: "include"
+        }).then(res => {return res.text()}).then((data) => {
+            if(data != "Vous n'êtes pas authentifié.") {
+                this.userObject = JSON.parse(data);
+                return this.setState({
+                    isConnected: true,
+                    isLoaded: true
+                });
+                
+            };
+
+            return this.setState({
+                isConnected: false,
+                isLoaded: true
+            });
+        })
       };
     
     render() {
