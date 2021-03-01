@@ -171,7 +171,7 @@ router.get('/api/users/teachers', userAuth, async (req, res) => {
 });
 
 router.get('/api/users/external', cors({
-    origin: '*',
+    origin: 'http://yourlendar.fr',
     methods: [],
     allowedHeaders: [],
     exposedHeaders: [],
