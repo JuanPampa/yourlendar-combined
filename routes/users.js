@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../schemas/UserSchema');
 const userAuth = require('../middleware/userauth');
-const cors = request('cors');
+const cors = require('cors');
 
 const router = new express.Router(); // Creating a new express router to handle the different routes.
 
