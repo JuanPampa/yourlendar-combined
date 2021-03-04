@@ -170,26 +170,4 @@ router.get('/api/users/teachers', userAuth, async (req, res) => {
     })
 });
 
-router.get('/api/users/external', cors({
-    origin: 'http://yourlendar.fr',
-    methods: [],
-    allowedHeaders: [],
-    exposedHeaders: [],
-    credentials: false
-}), async (req, res) => {
-    const users = await User.find({});
-    let teachers = 0;
-    let students = 0;
-
-    users.forEach((user) => {
-        if(user.teacher) {
-            teachers++;
-        } else {
-            students++;
-        }
-    }) 
-    
-    return res.status(200).send([teachers, students]);
-})
-
 module.exports = router;
