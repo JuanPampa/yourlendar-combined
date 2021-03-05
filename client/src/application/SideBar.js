@@ -23,7 +23,8 @@ class TeacherSideBar extends React.Component {
         return (        
             <div>
                 <div className='p-4 m-auto space-y-6'>
-                    <Link to="/timetable"><button className='button button--traditional'>Gérer vos devoirs</button></Link>
+                    <Link to="/timetable"><button className='button button--traditional mb-8'>Gérer vos devoirs</button></Link>
+                    <Link to="/classes"><button className='button button--traditional'>Gérer vos classes</button></Link>
                 </div>
                 <div className='p-4 m-auto space-y-6 flex flex-col'></div>
             </div>
@@ -34,8 +35,8 @@ class TeacherSideBar extends React.Component {
 class SideBarMenu extends React.Component {
     constructor(props) {
         super(props);
-        this.userObject = this.props.user
-        console.log(this.userObject)
+        this.userObject = this.props.user;
+        console.log(this.userObject);
     }
     
     render() {
@@ -47,9 +48,9 @@ class SideBarMenu extends React.Component {
                     src='https://yourlendar-app.herokuapp.com/favicon.png' 
                     alt='Yourlendar'>
                 </img>
-                <h3 className='text-xl text-green-500 m-auto leading-tight mb-4'>Bonjour, {this.userObject.surname} {this.userObject.name}.</h3>
+                <h3 className='text-xl text-green-500 m-auto leading-tight mb-4'>Bonjour, {this.userObject.name} {this.userObject.surname}.</h3>
                 </div>
-                {this.userObject.teacher && <TeacherSideBar/>}
+                {this.userObject.isTeacher && <TeacherSideBar/>}
                 <button 
                     className='button button--warning inline-flex items-center'
                     onClick={() => disconnect()}>

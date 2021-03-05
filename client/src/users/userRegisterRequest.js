@@ -1,4 +1,4 @@
-export default function createUserAccount(surname, name, username, password, teacher, callback) {
+export default function createUserAccount(surname, name, username, password, isTeacher, callback) {
 
     fetch("/api/users/register", {
         method: "POST",
@@ -11,7 +11,7 @@ export default function createUserAccount(surname, name, username, password, tea
             name: name,
             username: username,
             password: password,
-            teacher: teacher
+            isTeacher: isTeacher
         })
     }).then().then(data => {
         return callback(data.status);

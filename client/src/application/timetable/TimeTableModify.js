@@ -1,14 +1,14 @@
 import React from 'react';
 import TimeTableItem from './TimeTableItem';
 
-export default class TimeTableRemove extends React.Component {
+export default class TimeTableModify extends React.Component {
     
     constructor() {
-        super()
+        super();
         this.renderedItems = [];
         this.state = {
             dataLoaded: false
-        }
+        };
     }
 
     componentDidMount() {

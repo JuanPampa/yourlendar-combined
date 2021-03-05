@@ -1,6 +1,6 @@
 import React from 'react';
-import SearchBox from './SearchBox';
-
+import SearchBox from '../SearchBox';
+import {MdAddCircle} from 'react-icons/md'
 export default class TimeTableAdd extends React.Component {
     constructor(props) {
         super(props);
@@ -12,7 +12,9 @@ export default class TimeTableAdd extends React.Component {
             isLoaded: false,
             searchBar: "",
             users: [],
-            usersChosen: []
+            classes: [],
+            usersChosen: [],
+            classesChosen: []
         }
     }
 
@@ -23,9 +25,18 @@ export default class TimeTableAdd extends React.Component {
             mode: "cors",
             credentials: "include"
         }).then(res => {return res.text()}).then((data) => {
-
             JSON.parse(data).forEach((user) => {
                 this.setState({users: this.state.users.concat([user])})
+            })
+        })
+
+        fetch("/api/classes", {
+            method: "GET",
+            mode: "cors",
+            credentials: "include"
+        }).then(res => {return res.text()}).then((data) => {
+            JSON.parse(data).forEach((classItem) => {
+                this.setState({classes: this.state.classes.concat([classItem])})
             })
             
             return this.setState({isLoaded: true})
@@ -54,8 +65,18 @@ export default class TimeTableAdd extends React.Component {
         this.setState({users: this.state.users.concat([userEntered])});
     }
 
-    addTimeTableItem(keyword, description, date) {
+    addClass(classEntered) {
+        this.setState({classes: this.state.classes.filter(classItem => !(classItem._id === classEntered._id))});
+        this.setState({classesChosen: this.state.classesChosen.concat([classEntered])});
+    }
 
+    removeClass(classEntered) {
+        this.setState({classesChosen: this.state.classesChosen.filter(classItem => !(classItem._id === classEntered._id))});
+        this.setState({classes: this.state.classes.concat([classEntered])});
+    }
+
+    addTimeTableItem(keyword, description, date) {
+        this.state.classesChosen.map(classItem => classItem._id);
         fetch("/api/timetable", {
             method: "POST",
             headers: {
@@ -67,9 +88,12 @@ export default class TimeTableAdd extends React.Component {
                 description: description,
                 date: date,
                 teacher: this.teacher,
-                users: this.state.usersChosen
+                users: this.state.usersChosen,
+                classes: this.state.classesChosen
             })
-        }).then().then(() => this.setState({isLoaded: false}));
+        })
+        
+        return this.setState({isLoaded: false})
 
         /*request.post({
             url: "http://localhost:8000/timetable",
@@ -110,16 +134,28 @@ export default class TimeTableAdd extends React.Component {
                         <h2>Date limite:</h2>
                         <input className='login-form-input' id='timetable-date' spellCheck='false' type='date'></input>
                     </div>
-                    <div className='m-10'>
-                        {this.state.usersChosen.length > 0 && <UsersChosen users={this.state.usersChosen} removeUser={(user) => this.removeUser(user)}/>}
-                        <div className='mb-3'>
-                            <SearchBox placeholder='Recherchez un élève' handleChange={(e) => this.setState({searchBar: e.target.value})}/>
+                    <div className="flex">
+                        <div className='m-10'>
+                            <h3 className="text-red-500">Élèves choisis:</h3>
+                            {this.state.usersChosen.length > 0 && <UsersChosen users={this.state.usersChosen} removeUser={(user) => this.removeUser(user)}/>}
+                            <div className='mb-3'>
+                                <SearchBox placeholder='Recherchez un élève' handleChange={(e) => this.setState({searchBar: e.target.value})}/>
+                            </div>
+                            <h3 className="text-green-500">Élèves pouvant être choisis:</h3>
+                            {this.state.searchBar.length > 0 && <UsersList users={filteredUsers} addUser={(user) => this.addUser(user)}/>}
                         </div>
-                        {this.state.searchBar.length > 0 && <UsersList users={filteredUsers} addUser={(user) => this.addUser(user)}/>}
+
+                        <div className='m-10'>
+                            <h3 className="text-red-500">Classes choisies:</h3>
+                            <ClassChosen classes={this.state.classesChosen} removeClass={(classItem) => this.removeClass(classItem)}/>
+                            <h3 className="text-green-500">Classes pouvant être choisies:</h3>
+                            <ClassList classes={this.state.classes} addClass={(classItem) => this.addClass(classItem)}/>
+                        </div>
                     </div>
                     
+                    
                     <div className='m-10'>
-                        <button id='submit-button' onClick={() => this.addTimeTableItem(document.getElementById("timetable-keyword").value, document.getElementById("timetable-description").value, document.getElementById("timetable-date").value)}>Créer le devoir</button>
+                        <button className="button bg-yellow-800 flex" onClick={() => this.addTimeTableItem(document.getElementById("timetable-keyword").value, document.getElementById("timetable-description").value, document.getElementById("timetable-date").value)}><MdAddCircle size={20} /> <span className="pl-2">Créer le devoir</span></button>
                     </div>
                 </div>
             )
@@ -128,10 +164,10 @@ export default class TimeTableAdd extends React.Component {
     }
 }
 
-function UsersList(props) {
+export function UsersList(props) {
     let renderedArray = []
     props.users.forEach(user => {
-        renderedArray.push(<button key={user._id} className='button bg-green-500 block' onClick={() => props.addUser(user)}>{user.surname} {user.name}</button>)
+        renderedArray.push(<button key={user._id} className='button bg-green-500 block' onClick={() => props.addUser(user)}>{user.name} {user.surname}</button>)
     })
     return (
         <div className='block space-y-4'>
@@ -140,10 +176,34 @@ function UsersList(props) {
     )
 }
 
-function UsersChosen(props) {
+export function UsersChosen(props) {
     let renderedArray = []
     props.users.forEach(user => {
-        renderedArray.push(<button key={user._id} className='button bg-red-500 block mb-2' onClick={() => props.removeUser(user)}>{user.surname} {user.name}</button>)
+        renderedArray.push(<button key={user._id} className='button bg-red-500 block mb-2' onClick={() => props.removeUser(user)}>{user.name} {user.surname}</button>)
+    })
+    return (
+        <div className='block space-y-4'>
+            {renderedArray}
+        </div>
+    )
+}
+
+export function ClassList(props) {
+    let renderedArray = []
+    props.classes.forEach(classItem => {
+        renderedArray.push(<button key={classItem._id} className='button bg-green-500 block' onClick={() => props.addClass(classItem)}>{classItem.name}</button>)
+    })
+    return (
+        <div className='block space-y-4'>
+            {renderedArray}
+        </div>
+    )
+}
+
+export function ClassChosen(props) {
+    let renderedArray = []
+    props.classes.forEach(classItem => {
+        renderedArray.push(<button key={classItem._id} className='button bg-red-500 block mb-2' onClick={() => props.removeClass(classItem)}>{classItem.name}</button>)
     })
     return (
         <div className='block space-y-4'>

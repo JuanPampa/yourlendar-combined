@@ -1,7 +1,6 @@
 import React from 'react';
 import './UsersRegister.css';
 import createUserAccount from './userRegisterRequest';
-const validator = require('validator');
 
 // Forbidden characters array to be used later.
 let forbiddenCharacters = ['<', '>', '{', '}', ' ', '=', ',', ':'];

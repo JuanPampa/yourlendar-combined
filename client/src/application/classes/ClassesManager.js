@@ -1,13 +1,14 @@
 import React from 'react';
-import TimeTableAdd from './TimeTableAdd';
-import TimeTableModify from './TimeTableModify';
+import ClassesAdd from './ClassesAdd';
+import ClassesModify from './ClassesModify';
 import {Link} from 'react-router-dom';
 
 
-export default class TimeTableManager extends React.Component {
+export default class ClassesManager extends React.Component {
 
     constructor() {
-        super()
+        super();
+        this.userObject = {};
         this.state = {
             isLoaded: false,
             mode: 0
@@ -21,6 +22,7 @@ export default class TimeTableManager extends React.Component {
             mode: "cors",
             credentials: "include"
         }).then(res => {return res.text()}).then((data) => {
+
             if(data !== "Vous n'êtes pas authentifié.") {
                 this.userObject = JSON.parse(data);
                 if(this.userObject.isTeacher) {
@@ -64,10 +66,10 @@ export default class TimeTableManager extends React.Component {
                 <div className='bg-gray-800 flex text-center m-auto max-w-full block'>
                     <div className='m-auto'>
                         <div className='p-4 m-auto space-y-6'>
-                            <button className='button button--traditional' onClick={() => this.setState({mode: 1})}>Ajouter un devoir</button>
+                            <button className='button button--traditional' onClick={() => this.setState({mode: 1})}>Ajouter une classe</button>
                         </div>
                         <div className='p-4 m-auto space-y-6'>
-                            <button className='bg-yellow-600 button button--traditional' onClick={() => this.setState({mode: 2})}>Modifier vos devoirs</button>
+                            <button className='bg-yellow-600 button button--traditional' onClick={() => this.setState({mode: 2})}>Gérer vos classes</button>
                         </div>
                         <div className='p-4 m-auto space-y-6'>
                             <button className='bg-red-500 button button--traditional' onClick={() => this.setState({mode: 0})}>Fermer </button>
@@ -77,8 +79,8 @@ export default class TimeTableManager extends React.Component {
                         </div>
                     </div>
 
-                    {this.state.mode === 1 && <TimeTableAdd teacher={this.userObject}/>}
-                    {this.state.mode === 2 && <TimeTableModify />}
+                    {this.state.mode === 1 && <ClassesAdd teacher={this.userObject}/>}
+                    {this.state.mode === 2 && <ClassesModify />}
                 </div>
            </div>
             )

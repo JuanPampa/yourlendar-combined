@@ -65,7 +65,7 @@ export default class Application extends React.Component {
             mode: "cors",
             credentials: "include"
         }).then(res => {return res.text()}).then((data) => {
-            if(data != "Vous n'êtes pas authentifié.") {
+            if(data !== "Vous n'êtes pas authentifié.") {
                 this.userObject = JSON.parse(data);
                 return this.setState({
                     isConnected: true,
