@@ -14,7 +14,7 @@ router.get('/api/users', userAuth, async (req, res) => {
             surname: req.user.surname,
             name: req.user.name,
             email: req.user.email,
-            teacher: req.user.teacher
+            isTeacher: req.user.isTeacher
         }
         return res.status(200).json(userObject);
     }
@@ -25,10 +25,8 @@ router.post('/api/users/register', userAuth, async (req, res) => {
     if(req.token) return res.status(200).send('Vous êtes déjà connecté, vous allez être redirigé..');
 
     // Checking if the request body is correct so that we can proceed with the account creation.
-    console.log(req.body)
     if(!req.body.surname || !req.body.name || !req.body.username || !req.body.password) return res.status(400).send('Veuillez vérifier votre requête.');
-    if(!req.body.teacher) req.body.teacher = false;
-
+    if(!req.body.isTeacher) req.body.isTeacher = false;
     // Hashing the password so that it can be stored safely in the database.
     const salt = await bcrypt.genSalt(10);
     req.body.password = await bcrypt.hash(req.body.password, salt);
@@ -48,7 +46,6 @@ router.post('/api/users/register', userAuth, async (req, res) => {
 
     // Saving the User object in the MongoDB database.
     await createdUser.save();
-    console.log(yourlendarToken)
     // Returning a 200 status to the user aswell as the cookie.
     return res.status(201).cookie('access_token_yourlendar', 'Bearer ' + yourlendarToken, {maxAge: 610000000}).send('Votre compte à été crée.');
 });
@@ -100,7 +97,7 @@ router.post('/api/users/logout', userAuth, async(req, res) => {
 });
 
 router.get('/api/users/all', userAuth, async (req, res) => {
-    User.find({}, (request, users) => {
+    User.find({}, (_, users) => {
         let userList = []
 
         users.forEach((user) => {
@@ -122,20 +119,18 @@ router.get('/api/users/all', userAuth, async (req, res) => {
 });
 
 router.get('/api/users/students', userAuth, async (req, res) => {
-    User.find({}, (request, users) => {
+    User.find({}, (_, users) => {
         let userList = []
 
         users.forEach((user) => {
-            if(!user.teacher) {
+            if(!user.isTeacher) {
                 let username = user.username;
                 let name = user.name;
                 let surname = user.surname;
-                let id = user._id;
                 let userObject = {
                     username: user.username,
                     surname: surname,
-                    name: name,
-                    id: id
+                    name: name
                 };
                 userList.push(userObject);
             }
@@ -147,11 +142,11 @@ router.get('/api/users/students', userAuth, async (req, res) => {
 });
 
 router.get('/api/users/teachers', userAuth, async (req, res) => {
-    User.find({}, (request, users) => {
+    User.find({}, (_, users) => {
         let userList = []
 
         users.forEach((user) => {
-            if(user.teacher) {
+            if(user.isTeacher) {
                 let username = user.username;
                 let surname = user.surname;
                 let name = user.name;

@@ -1,29 +1,8 @@
 const mongodb = require('mongodb');
 const mongoose = require('mongoose');
 
-const timeTableSchema = new mongoose.Schema({
-    description: {
-        type: String,
-        trim: true,
-        required: false
-    },
-    date: {
-        type: Date,
-        trim: true,
-        required: true
-    },
-    /*important: {
-        type: Boolean,
-        trim: true,
-        required: false
-    },
-    color: {
-        type: String,
-        trim: true,
-        required: false,
-        default: 'white'
-    },*/
-    keyword: {
+const classSchema = new mongoose.Schema({
+    name: {
         type: String,
         trim: true,
         required: true
@@ -56,10 +35,9 @@ const timeTableSchema = new mongoose.Schema({
             trim: true,
             required: true
         }
-    }],
-    classes: [mongoose.Schema.Types.ObjectId]
+    }]
 });
 
-const TimeTable = new mongoose.model('TimeTable', timeTableSchema);
+const ClassItem = new mongoose.model('classes', classSchema);
 
-module.exports = TimeTable;
+module.exports = ClassItem;

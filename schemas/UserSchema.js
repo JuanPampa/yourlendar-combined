@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema({
         maxlength: 4,
         required: false
     },
-    teacher: {
+    isTeacher: {
         type: Boolean,
         required: true
     }

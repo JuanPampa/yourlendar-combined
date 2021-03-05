@@ -1,6 +1,7 @@
 const express = require('express');
 require('./database/mongoose');
 const usersRoute = require('./routes/users');
+const classRoute = require('./routes/class');
 const timeTableRoute = require('./routes/timetable');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -19,6 +20,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(usersRoute);
+app.use(classRoute);
 app.use(timeTableRoute);
 
 app.get('*', (req,res) =>{
