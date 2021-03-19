@@ -75,7 +75,7 @@ export default class TimeTableAdd extends React.Component {
         this.setState({classes: this.state.classes.concat([classEntered])});
     }
 
-    addTimeTableItem(keyword, description, date) {
+    addTimeTableItem(keyword, description, link, date) {
         this.state.classesChosen.map(classItem => classItem._id);
         fetch("/api/timetable", {
             method: "POST",
@@ -89,6 +89,7 @@ export default class TimeTableAdd extends React.Component {
                 date: date,
                 teacher: this.teacher,
                 users: this.state.usersChosen,
+                links: [link],
                 classes: this.state.classesChosen
             })
         })
@@ -131,6 +132,9 @@ export default class TimeTableAdd extends React.Component {
                         <input className='login-form-input' id='timetable-description' spellCheck='false' type='text' placeholder='Description (optionnelle)'></input>
                     </div>
                     <div className='m-10'>
+                        <input className='login-form-input' id='timetable-link' spellCheck='false' type='text' placeholder='Lien (optionnel)'></input>
+                    </div>
+                    <div className='m-10'>
                         <h2>Date limite:</h2>
                         <input className='login-form-input' id='timetable-date' spellCheck='false' type='date'></input>
                     </div>
@@ -155,7 +159,7 @@ export default class TimeTableAdd extends React.Component {
                     
                     
                     <div className='m-10'>
-                        <button className="button bg-yellow-800 flex" onClick={() => this.addTimeTableItem(document.getElementById("timetable-keyword").value, document.getElementById("timetable-description").value, document.getElementById("timetable-date").value)}><MdAddCircle size={20} /> <span className="pl-2">Créer le devoir</span></button>
+                        <button className="button bg-yellow-800 flex" onClick={() => this.addTimeTableItem(document.getElementById("timetable-keyword").value, document.getElementById("timetable-description").value, document.getElementById("timetable-link").value, document.getElementById("timetable-date").value)}><MdAddCircle size={20} /> <span className="pl-2">Créer le devoir</span></button>
                     </div>
                 </div>
             )

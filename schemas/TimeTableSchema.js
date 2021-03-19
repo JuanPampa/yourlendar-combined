@@ -57,7 +57,8 @@ const timeTableSchema = new mongoose.Schema({
             required: true
         }
     }],
-    classes: [mongoose.Schema.Types.ObjectId]
+    classes: [mongoose.Schema.Types.ObjectId],
+    links: []
 });
 
 const TimeTable = new mongoose.model('TimeTable', timeTableSchema);
