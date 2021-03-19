@@ -47,7 +47,7 @@ router.post('/api/users/register', userAuth, async (req, res) => {
     // Saving the User object in the MongoDB database.
     await createdUser.save();
     // Returning a 200 status to the user aswell as the cookie.
-    return res.status(201).cookie('access_token_yourlendar', 'Bearer ' + yourlendarToken, {maxAge: 610000000}).send('Votre compte à été crée.');
+    return res.status(201).cookie('access_token_yourlendar', "token" + yourlendarToken, {maxAge: 610000000}).send('Votre compte à été crée.');
 });
 
 router.post('/api/users/auth', userAuth, async (req, res) => {
@@ -71,7 +71,7 @@ router.post('/api/users/auth', userAuth, async (req, res) => {
             await checkForUser.save();
 
             // Returning a 200 status to the user aswell as the cookie.
-            return res.status(200).cookie('access_token_yourlendar', 'Bearer ' + newYourlendarToken, {maxAge: 610000000}).send('Vous êtes bien connecté, vous allez être redirigé..');
+            return res.status(200).cookie('access_token_yourlendar', "token" + newYourlendarToken, {maxAge: 610000000}).send('Vous êtes bien connecté, vous allez être redirigé..');
         }
     });
     return;
