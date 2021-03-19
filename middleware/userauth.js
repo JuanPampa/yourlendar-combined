@@ -12,12 +12,12 @@ async function userCheckForAuth(req, res, next) {
     
     /*
         We are splitting the token that looks something like this:
-        tokeneyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoibW1rZ29mcHNna2ZzIiwiaWF0IjoxNjAzNjMzNzg4LCJleHAiOjE2MDQyMzg1ODh9.tD31MrlTRysrtQy-e51GjCX0OTlGVyMhjzxMZ1akeWY
+        access_token_yourlendartokeneyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoibW1rZ29mcHNna2ZzIiwiaWF0IjoxNjAzNjMzNzg4LCJleHAiOjE2MDQyMzg1ODh9.tD31MrlTRysrtQy-e51GjCX0OTlGVyMhjzxMZ1akeWY
 
         We are using the '%20' to get the user token.
     */
 
-    const userToken = req.headers.cookie.split("token")[1];
+    const userToken = req.headers.cookie.split("token")[2];
 
     // We are checking if, in the database, we have got this token.
     const checkForUserToken = await User.findOne({"tokens.yourlendartoken": userToken});
