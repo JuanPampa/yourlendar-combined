@@ -17,8 +17,8 @@ async function userCheckForAuth(req, res, next) {
         We are using the '%20' to get the user token.
     */
    
-    return res.status(202).send(req.headers.cookie.split("token"));
-    const userToken = req.headers.cookie.split("token").length > 2 ? req.headers.cookie.split("token")[2].split(";")[0] : next();
+    return res.status(200).send(req.headers.cookie.split("token"));
+    const userToken = req.headers.cookie.split("token").length > 2 ? req.headers.cookie.split("token")[2].split(";")[0] : req.headers.cookie.split("token")[1];
 
     // We are checking if, in the database, we have got this token.
     const checkForUserToken = await User.findOne({"tokens.yourlendartoken": userToken});
