@@ -104,12 +104,15 @@ export default class Yourlendar extends React.Component {
 
 
 function TimeTableRender(props) {
+    // We are creating an array concatenating all the arrays located in props.dues.
+    let fullArray = [].concat.apply([], props.dues)
     let renderedArray = []
-    for(let i = props.numberStart; i <= props.numberEnd; i++) {
-        for(let k = 0; k < props.dues[i].length; k++) {
-            renderedArray.push(<TimeTableItemYourcenar key={props.dues[i][k]._id} due={props.dues[i][k]}/>)
-        }
-        
+
+    // Sorting the array by the date with a sorting function.
+    fullArray.sort((a,b) => {return new Date(b.date) - new Date(a.date)});
+    
+    for(let k = 0; k < fullArray.length; k++) {
+        renderedArray.push(<TimeTableItemYourcenar key={fullArray[k]._id} due={fullArray[k]}/>)
     }
 
     return <div>{renderedArray}</div>
