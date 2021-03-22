@@ -51,7 +51,6 @@ router.post('/api/timetable/modify', userAuth, async(req, res) => {
         timetableItem.date = req.body.date;
         timetableItem.description = req.body.description;
         timetableItem.users = req.body.users;
-        timetableItem.links = req.body.links;
         timetableItem.classes = req.body.classes;
         await timetableItem.save();
         return res.status(200);
