@@ -9,6 +9,7 @@ router.post('/api/timetable', userAuth, async (req, res) => {
     if(!req.body.date || !req.body.keyword) return res.status(400);
     if(!req.user.isTeacher) return res.status(400).send("Vous n'êtes pas un professeur.");
 
+    if(Date.parse(req.body.date)-Date.parse(new Date())<0) return res.status(400).send("Date incorrecte.");
     const timetableItem = new TimeTableItem(req.body);
 
     await timetableItem.save();
@@ -45,6 +46,8 @@ router.post('/api/timetable/modify', userAuth, async(req, res) => {
     if(!req.user.isTeacher) return res.status(400).send("Vous n'êtes pas un professeur.");
 
     const timetableItem = await TimeTableItem.findOne({_id: req.body._id});
+
+    if(Date.parse(req.body.date)-Date.parse(new Date())<0) return res.status(400).send("Date incorrecte.");
 
     if(timetableItem && timetableItem.teacher.username === req.user.username) {
         timetableItem.keyword = req.body.keyword;

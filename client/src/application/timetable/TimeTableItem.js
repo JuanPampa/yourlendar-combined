@@ -14,6 +14,7 @@ export default class TimeTableItem extends React.Component {
             isModify: false,
             users: [],
             classes: [],
+            isMessageVisible: false,
             searchBar: "",
             timetableItem: this.props.timetableItem,
             keyword: this.timetableItem.keyword,
@@ -52,6 +53,11 @@ export default class TimeTableItem extends React.Component {
     }
 
     modifyItem(timetableItem, keyword, description, date) {
+        
+        if(Date.parse(date)-Date.parse(new Date())<0) {
+            return this.handleError("Date incorrecte.")
+        };
+
         timetableItem.keyword = keyword;
         timetableItem.description = description;
         timetableItem.date = date;
@@ -63,6 +69,8 @@ export default class TimeTableItem extends React.Component {
             },
             body: JSON.stringify(timetableItem)
         })
+
+        window.location.href = "/timetable";
         return this.setState({isModify: false});
     }
 
@@ -146,6 +154,11 @@ export default class TimeTableItem extends React.Component {
         this.setState({classes: this.state.classes.concat([classEntered])});
     }
 
+    handleError(message) {
+        this.setState({isMessageVisible: true})
+        document.getElementById("yourlendar-error.message").innerHTML = message;
+    }
+
     changeModify() {
         return this.setState({isModify: !this.state.isModify});
     }
@@ -203,7 +216,10 @@ export default class TimeTableItem extends React.Component {
                                 <button className="button flex bg-red-900" onClick={() => this.setState({isModify: false})}><MdUndo size={20}/>  <span className="pl-2">Retour</span></button>
                             </div>
                         </div>
-                        
+
+                        <div className={`m-10, ${this.state.isMessageVisible ? "visible" : "hidden"}`}>
+                            <h3 id="yourlendar-error-message" className="text-red-400">ERREUR</h3>
+                        </div>
 
                     </div>
                 )

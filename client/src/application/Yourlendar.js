@@ -112,6 +112,19 @@ function TimeTableRender(props) {
     fullArray.sort((a,b) => {return new Date(b.date) - new Date(a.date)});
     
     for(let k = 0; k < fullArray.length; k++) {
+        if(Date.parse(fullArray[k].date) - Date.parse(new Date()) < 0) {
+            fetch("/api/timetable", {
+                method: "DELETE",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    _id: fullArray[k]._id
+                })
+            })
+            continue;
+        }
         renderedArray.push(<TimeTableItemYourcenar key={fullArray[k]._id} due={fullArray[k]}/>)
     }
 

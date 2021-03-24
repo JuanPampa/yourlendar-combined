@@ -10,6 +10,7 @@ export default class TimeTableAdd extends React.Component {
         };
         this.state = {
             isLoaded: false,
+            isMessageVisible: false,
             searchBar: "",
             users: [],
             classes: [],
@@ -19,7 +20,6 @@ export default class TimeTableAdd extends React.Component {
     }
 
     getAllUsers() {
-
         fetch("/api/users/students", {
             method: "GET",
             mode: "cors",
@@ -75,7 +75,17 @@ export default class TimeTableAdd extends React.Component {
         this.setState({classes: this.state.classes.concat([classEntered])});
     }
 
+    handleError(message) {
+        this.setState({isMessageVisible: true})
+        document.getElementById("yourlendar-error.message").innerHTML = message;
+    }
+
     addTimeTableItem(keyword, description, date) {
+        
+        if(Date.parse(date)-Date.parse(new Date())<0) {
+            return this.handleError("Date incorrecte.")
+        };
+
         this.state.classesChosen.map(classItem => classItem._id);
         fetch("/api/timetable", {
             method: "POST",
@@ -93,6 +103,8 @@ export default class TimeTableAdd extends React.Component {
             })
         })
         
+        window.location.href = "/timetable";
+
         return this.setState({isLoaded: false})
 
         /*request.post({
@@ -156,6 +168,10 @@ export default class TimeTableAdd extends React.Component {
                     
                     <div className='m-10'>
                         <button className="button bg-yellow-800 flex" onClick={() => this.addTimeTableItem(document.getElementById("timetable-keyword").value, document.getElementById("timetable-description").value, document.getElementById("timetable-date").value)}><MdAddCircle size={20} /> <span className="pl-2">Créer le devoir</span></button>
+                    </div>
+                
+                    <div className={`m-10, ${this.state.isMessageVisible ? "visible" : "hidden"}`}>
+                        <h3 id="yourlendar-error-message" className="text-red-400">ERREUR</h3>
                     </div>
                 </div>
             )
