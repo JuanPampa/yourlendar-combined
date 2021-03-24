@@ -115,6 +115,7 @@ function TimeTableRender(props) {
         renderedArray.push(<TimeTableItemYourcenar key={fullArray[k]._id} due={fullArray[k]}/>)
     }
 
+    renderedArray = renderedArray.reverse()
     return <div>{renderedArray}</div>
 }
 class TimeTableItemYourcenar extends React.Component {
