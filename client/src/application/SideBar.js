@@ -1,5 +1,4 @@
 import React from 'react';
-import AddElement from './assets/AddElement';
 import {Link} from 'react-router-dom';
 
 function disconnect() {
@@ -41,7 +40,7 @@ export default class SideBar extends React.Component {
     
     render() {
         return (
-            <div className='h-auto'>
+            <div className='bg-blue-800 rounded-lg shadow-xl max-w-sm flex flex-col divide-y divide-gray-400'>
                 <div className='p-4 m-auto'> 
                 <img 
                     className='m-auto p-1'
