@@ -150,7 +150,7 @@ class TimeTableItemYourcenar extends React.Component {
                     <p className='text-gray-600 text-xl'>{this.due.description}</p>
                 </div>
                 <div className='pt-2'>
-                    <p className='text-blue-400'>Professeur: {this.due.teacher.name.toUpperCase()}</p>
+                    <p className='text-blue-400'>Professeur: {this.due.teacher.surname.toUpperCase()}</p>
                     <p className='text-purple-400'>Pour le {this.due.date.split('-')[2].split('T')[0]}/{this.due.date.split('-')[1]}/{this.due.date.split('-')[0]}</p>
                 </div>
             </div>

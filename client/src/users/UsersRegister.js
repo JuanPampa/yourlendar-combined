@@ -72,11 +72,11 @@ export default function UsersRegister() {
                 <h3>Enregistrement</h3>
 
                 <div className='register-form-content'>
-                    <input className='register-form-input' onKeyPress={(e) => handleKeyPress(e)} id='yourlendar-name-register' spellCheck='false' type='text' placeholder="Nom"></input>
+                    <input className='register-form-input' onKeyPress={(e) => handleKeyPress(e)} id='yourlendar-surname-register' spellCheck='false' type='text' placeholder="Nom"></input>
                 </div>
 
                 <div className='register-form-content'>
-                    <input className='register-form-input' onKeyPress={(e) => handleKeyPress(e)} id='yourlendar-surname-register' spellCheck='false' type='text' placeholder="Prénom"></input>
+                    <input className='register-form-input' onKeyPress={(e) => handleKeyPress(e)} id='yourlendar-name-register' spellCheck='false' type='text' placeholder="Prénom"></input>
                 </div>
 
                 <div className='register-form-content'>
