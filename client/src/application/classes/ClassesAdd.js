@@ -32,21 +32,16 @@ export default class ClassesAdd extends React.Component {
     }
 
     addClassItem(name) {
+
         this.state.usersChosen.forEach(user => {
             delete user.id; 
         })
-        fetch("/api/classes", {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: name,
-                teacher: this.teacher,
-                users: this.state.usersChosen
-            })
-        }).then().then(() => {this.setState({isLoaded: false})});
+
+        classAdd(name, this.teacher, this.state.usersChosen);
+        
+        window.location.href = "/classes"
+
+        return this.setState({isLoaded: false})
     }
 
     addUser(userEntered) {
@@ -119,3 +114,19 @@ export function UsersChosen(props) {
     )
 }
 
+const classAdd = async (name, teacher, users) => {
+    await fetch("/api/classes", {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            name: name,
+            teacher: teacher,
+            users: users
+        })
+    })
+
+    return;
+};

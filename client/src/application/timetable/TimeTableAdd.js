@@ -10,7 +10,10 @@ export default class TimeTableAdd extends React.Component {
         };
         this.state = {
             isLoaded: false,
-            isMessageVisible: false,
+            errorMessage: {
+                isMessageVisible: false,
+                messageContent: ""
+            },
             searchBar: "",
             users: [],
             classes: [],
@@ -39,20 +42,10 @@ export default class TimeTableAdd extends React.Component {
                 this.setState({classes: this.state.classes.concat([classItem])})
             })
             
-            return this.setState({isLoaded: true})
+            this.setState({isLoaded: true})
         })
 
-        /*request.get({
-            url: '/api/users/students',
-            withCredentials: true
-        }, (err, res, body) => {
-
-            JSON.parse(body).forEach((user) => {
-                this.setState({users: this.state.users.concat([user.username])});
-            })
-
-            return this.setState({isLoaded: true});
-        })*/
+        return;
     }
     
     addUser(userEntered) {
@@ -76,8 +69,12 @@ export default class TimeTableAdd extends React.Component {
     }
 
     handleError(message) {
-        this.setState({isMessageVisible: true})
-        document.getElementById("yourlendar-error.message").innerHTML = message;
+        this.setState({
+            isMessageVisible: true, 
+            errorMessage: {
+                messageContent: message
+            } 
+        })
     }
 
     addTimeTableItem(keyword, description, date) {
@@ -171,7 +168,7 @@ export default class TimeTableAdd extends React.Component {
                     </div>
                 
                     <div className={`m-10, ${this.state.isMessageVisible ? "visible" : "hidden"}`}>
-                        <h3 id="yourlendar-error-message" className="text-red-400">ERREUR</h3>
+                        <h3 id="yourlendar-error-message" className="text-red-400">{this.state.errorMessage.messageContent}</h3>
                     </div>
                 </div>
             )

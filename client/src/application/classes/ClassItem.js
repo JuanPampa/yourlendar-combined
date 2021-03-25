@@ -38,30 +38,11 @@ export default class ClassItem extends React.Component {
     }
 
     removeItem(id) {
+        removeClass(id);
 
-        fetch("/api/classes", {
-            method: "DELETE",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                _id: id
-            })
-        }).then().then(() => this.setState({isDeleted: true}));
+        window.location.href = "/classes";
 
-        /*request.delete({
-            url: "/api/timetable",
-            withCredentials: true,
-            json: true,
-            body: {
-                _id: id
-            }
-            }, (err, res, body) => {
-                if(res.statusCode === 200) {
-                    this.setState({isDeleted: true})
-                }
-            })*/
+        return this.setState({isDeleted: true})
     }
 
     addUser(userCho) {
@@ -94,18 +75,15 @@ export default class ClassItem extends React.Component {
     }
 
     modifyItem(classItem, className) {
+
         classItem.users.forEach(user => {
             delete user._id; 
         })
+
         classItem.name = className;
-        fetch("/api/classes/modify", {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(classItem)
-        }).then().then(() => this.setState({isModify: false}));
+        modifyClass(classItem);
+
+        this.changeModify();
     }
 
     render() {
@@ -159,4 +137,33 @@ export default class ClassItem extends React.Component {
             return <div></div>
         }
     }
+}
+
+const modifyClass = async (classItem) => {
+
+    fetch("/api/classes/modify", {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(classItem)
+    })
+
+    return;
+}
+
+const removeClass = async (id) => {
+    await fetch("/api/classes", {
+        method: "DELETE",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            _id: id
+        })
+    })
+
+    return;
 }

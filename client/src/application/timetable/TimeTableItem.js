@@ -70,7 +70,6 @@ export default class TimeTableItem extends React.Component {
             body: JSON.stringify(timetableItem)
         })
 
-        window.location.href = "/timetable";
         return this.setState({isModify: false});
     }
 
@@ -86,20 +85,10 @@ export default class TimeTableItem extends React.Component {
                 _id: id
             })
         })
-        return this.setState({isDeleted: true});
 
-        /*request.delete({
-            url: "/api/timetable",
-            withCredentials: true,
-            json: true,
-            body: {
-                _id: id
-            }
-            }, (err, res, body) => {
-                if(res.statusCode === 200) {
-                    this.setState({isDeleted: true})
-                }
-            })*/
+        window.location.href = "/timetable";
+
+        return this.setState({isDeleted: true});
     }
 
     addUser(userCho) {
