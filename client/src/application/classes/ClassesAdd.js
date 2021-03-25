@@ -65,7 +65,7 @@ export default class ClassesAdd extends React.Component {
         if(this.state.isLoaded) {
             return (
                 <div className='m-auto ml-5 mr-5'>
-                    <h1> Ajouter un devoir </h1>
+                    <h1> Ajouter une classe </h1>
                     <div className='m-10'>
                         {/* <h2>Pseudonyme ENT:</h2> */}
                         <input className='login-form-input' id='class-name' spellCheck='false'type='text' placeholder="Nom de la classe"></input>
