@@ -32,7 +32,7 @@ class TeacherSideBar extends React.Component {
     }
 }
 
-class SideBarMenu extends React.Component {
+export default class SideBar extends React.Component {
     constructor(props) {
         super(props);
         this.userObject = this.props.user;
@@ -62,29 +62,4 @@ class SideBarMenu extends React.Component {
             </div>
         )
     }
-}
-
-
-export default class SideBar extends React.Component {
-    
-    constructor(props) {
-        super(props);
-        this.state = {
-            isAddElement: false
-        }
-    }
-
-    invertAddElement() {
-        this.setState({isAddElement: !this.state.isAddElement})
-    }
-
-    render() {
-        return (
-            <div className='bg-blue-800 rounded-lg shadow-xl max-w-sm flex flex-col divide-y divide-gray-400'>
-                {this.state.isAddElement && <AddElement/>}
-                {!this.state.isAddElement && <SideBarMenu user={this.props.user} />}
-            </div>
-        )
-    }
-
 }
